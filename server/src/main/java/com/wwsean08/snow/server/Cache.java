@@ -28,17 +28,19 @@ public class Cache
         Connection conn = DriverManager.
                 getConnection("jdbc:h2:~/test", PrivateConstants.dbUserName, PrivateConstants.dbPass);
         connection = conn;
-        createTable();
-        // add application code here
     }
     
     /**
      * Create the table which will contain the ski report data (if it doesn't
      * already exist)
+     * 
+     * @throws SQLException
      */
-    private void createTable()
+    public void createTable() throws SQLException
     {
-        
+        // TODO: come up with a better size for the report varchar
+        String statement = "CREATE MEMORY TABLE IF NOT EXISTS reportCache (ID INT PRIMARY KEY, resortId INT, reportTime BIGINT, report VARCHAR(2147483647));";
+        connection.prepareCall(statement).execute();
     }
     
     /**

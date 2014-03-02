@@ -28,7 +28,16 @@ public class Main
         // providers
         // in com.wwsean08.snow.server package
         final ResourceConfig rc = new ResourceConfig().packages("com.wwsean08.snow.server");
-        
+        //Create the table if it doesn't already exist on startup
+        try
+        {
+            Cache cache = new Cache();
+            cache.createTable();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
         // create and start a new instance of grizzly http server
         // exposing the Jersey application at BASE_URI
         return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
