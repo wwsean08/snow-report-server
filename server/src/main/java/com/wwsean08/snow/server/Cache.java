@@ -25,11 +25,20 @@ public class Cache
     public Cache() throws SQLException, ClassNotFoundException
     {
         Class.forName("org.h2.Driver");
-        // TODO: insert actual credentials before deploying
         Connection conn = DriverManager.
-                getConnection("jdbc:h2:~/test", "sa", "");
+                getConnection("jdbc:h2:~/test", PrivateConstants.dbUserName, PrivateConstants.dbPass);
         connection = conn;
+        createTable();
         // add application code here
+    }
+    
+    /**
+     * Create the table which will contain the ski report data (if it doesn't
+     * already exist)
+     */
+    private void createTable()
+    {
+        
     }
     
     /**
@@ -41,6 +50,7 @@ public class Cache
      */
     public ReportPOJO getReportFromCache(int id)
     {
+        
         return null;
     }
     
