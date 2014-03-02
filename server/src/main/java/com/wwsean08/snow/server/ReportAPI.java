@@ -9,10 +9,6 @@ import java.io.Reader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Properties;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -35,7 +31,7 @@ public class ReportAPI
     
     public ReportAPI()
     {
-        //getPreferences("config.properties");
+        // getPreferences("config.properties");
     }
     
     @GET
