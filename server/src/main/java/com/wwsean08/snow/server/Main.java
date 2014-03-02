@@ -33,6 +33,7 @@ public class Main
         {
             Cache cache = new Cache();
             cache.createTable();
+            cache.closeConnection();
         }
         catch(Exception e)
         {
