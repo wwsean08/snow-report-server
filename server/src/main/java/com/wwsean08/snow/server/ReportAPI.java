@@ -8,7 +8,9 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.SQLException;
 import java.util.Properties;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -28,10 +30,19 @@ import com.wwsean08.snow.common.ReportPOJO;
 public class ReportAPI
 {
     private Properties prefs;
+    private Cache cache;
     
     public ReportAPI()
     {
         // getPreferences("config.properties");
+        try
+        {
+            cache = new Cache();
+        }
+        catch (ClassNotFoundException | SQLException e)
+        {
+            e.printStackTrace();
+        }
     }
     
     @GET
@@ -88,40 +99,12 @@ public class ReportAPI
     @GET
     @Path("/test")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getTestReport(@QueryParam("id") int id)
+    public String getTestReport(@QueryParam("id") int id) throws SQLException
     {
         String result = "";
-        ReportPOJO report = getTestReport();
+        ReportPOJO report = cache.getReport(id);
         result = report.toString();
         return result;
-    }
-    
-    public ReportPOJO getTestReport()
-    {
-        URI url;
-        CloseableHttpClient httpclient = HttpClients.createDefault();
-        try
-        {
-            url = new URI("http://www.onthesnow.com/ots/webservice_tools/xml_samples/getResortSnowReportMobile.xml");
-            HttpGet request = new HttpGet(url);
-            CloseableHttpResponse response = httpclient.execute(request);
-            if (response.getStatusLine().getStatusCode() == 200)
-            {
-                InputStream responseContents = response.getEntity().getContent();
-                ReportPOJO pojo = ResponseParser.getReportPOJO(responseContents);
-                return pojo;
-            }
-            else
-            {
-                System.out.println("Error occured during request");
-                System.out.println(response.getStatusLine().toString());
-            }
-        }
-        catch (URISyntaxException | IOException e)
-        {
-            e.printStackTrace();
-        }
-        return null;
     }
     
     public void getPreferences(String prefsLocation)
